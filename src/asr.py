@@ -40,6 +40,7 @@ class ASR:
             # self.osc_server.shutdown()
             # os.execlp(sys.executable, sys.executable, *sys.argv)
             self.is_restart_needed = True
+            self.silent = False
         elif message == '/exit':
             self.osc_server.shutdown()
             self.http_server.close()

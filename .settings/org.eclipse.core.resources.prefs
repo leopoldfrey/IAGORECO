@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/GoogleImage.py=utf8
+encoding//src/InaturalistSearch.py=utf8
+encoding//src/PixabaySearch.py=utf8
 encoding//src/bottle.py=utf-8

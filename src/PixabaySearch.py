@@ -1,11 +1,8 @@
 # coding: utf8
-import urllib, urllib2
-import sys, osc, os, wget
+import sys, osc
 from threading import Thread
 import random
-from time import sleep
 from requests import get
-from findertools import restart
 
 API_KEY = '11796917-495df626c35f7f8d0c3831455'
 

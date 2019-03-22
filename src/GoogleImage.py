@@ -45,14 +45,6 @@ class DownThread(Thread):
                     self.osc_client.send('/result '+ str(x+1) + ' ' + str(n))
                     self.osc_client.send('/path '+unicode(url).encode('utf-8'))
         
-        #print(paths)   #printing absolute paths of the downloaded images
-        #p = str(paths.get(self.keyword))
-        #p = p.replace("'", "")
-        #p = p.replace("[", "")
-        #p = p.replace("]", "")
-        #self.osc_client.send("/keyword "+unicode(self.keyword).encode('utf-8'))
-        #self.osc_client.send("/path "+unicode(paths).encode('utf-8'))
-
 class GoogleImage:
     
     def __init__(self, osc_server_port=8260, osc_client_host='127.0.0.1', osc_client_port=8261):

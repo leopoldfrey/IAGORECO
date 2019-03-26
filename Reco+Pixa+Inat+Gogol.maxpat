@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 78.0, 901.0, 718.0 ],
+		"rect" : [ 398.0, 78.0, 901.0, 718.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -38,6 +38,30 @@
 		"style" : "",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-60",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 2084.0, 316.200042535156285, 71.0, 22.0 ],
+					"text" : "fromsymbol"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-59",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 2080.7999267578125, 204.175033586914111, 57.0, 22.0 ],
+					"text" : "tosymbol"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-63",
 					"maxclass" : "newobj",
@@ -364,8 +388,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 2279.300048999999944, 387.300048828125, 50.0, 22.0 ],
-					"text" : "50/100"
+					"patching_rect" : [ 2279.300048999999944, 387.300048828125, 50.0, 22.0 ]
 				}
 
 			}
@@ -439,8 +462,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1792.0, 398.000060863281306, 365.666666666666515, 20.0 ],
-					"text" : "http://www.taxi-vtc.eu/media/img_article_8.jpg"
+					"patching_rect" : [ 1792.0, 398.000060863281306, 365.666666666666515, 20.0 ]
 				}
 
 			}
@@ -513,8 +535,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1792.0, 343.00006103515625, 246.0, 31.0 ],
-					"text" : "chien"
+					"patching_rect" : [ 1792.0, 343.00006103515625, 246.0, 31.0 ]
 				}
 
 			}
@@ -527,30 +548,6 @@
 					"outlettype" : [ "", "", "", "" ],
 					"patching_rect" : [ 2084.0, 347.50006103515625, 183.0, 22.0 ],
 					"text" : "OSC-route /keyword /path /result"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-59",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 2080.799987999999757, 207.799988035156275, 59.0, 22.0 ],
-					"text" : "tosymbol"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-60",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 2084.0, 314.900024035156321, 73.0, 22.0 ],
-					"text" : "fromsymbol"
 				}
 
 			}
@@ -596,8 +593,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 698.300048999999944, 388.300048828125, 50.0, 22.0 ],
-					"text" : "85/100"
+					"patching_rect" : [ 698.300048999999944, 388.300048828125, 50.0, 22.0 ]
 				}
 
 			}
@@ -671,8 +667,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 968.0, 413.400024207031265, 311.0, 31.0 ],
-					"text" : "Fungi"
+					"patching_rect" : [ 968.0, 413.400024207031265, 311.0, 31.0 ]
 				}
 
 			}
@@ -684,8 +679,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1383.300048999999944, 360.300048828125, 50.0, 22.0 ],
-					"text" : "25/30"
+					"patching_rect" : [ 1383.300048999999944, 360.300048828125, 50.0, 22.0 ]
 				}
 
 			}
@@ -759,8 +753,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 968.0, 348.50006103515625, 320.0, 20.0 ],
-					"text" : "https://static.inaturalist.org/photos/7268/large.jpg?1444843269"
+					"patching_rect" : [ 968.0, 348.50006103515625, 320.0, 20.0 ]
 				}
 
 			}
@@ -833,8 +826,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 968.0, 289.100097828124944, 246.0, 31.0 ],
-					"text" : "champignon"
+					"patching_rect" : [ 968.0, 289.100097828124944, 246.0, 31.0 ]
 				}
 
 			}
@@ -924,13 +916,11 @@
 					"dontreplace" : 1,
 					"fontsize" : 10.0,
 					"id" : "obj-2",
-					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 211.0, 399.000060863281306, 375.0, 31.0 ],
-					"text" : "https://pixabay.com/get/ea32b9082cfd073ed1584d05fb1d4797e47ee4dc18b60c4090f5c27ba3e9bcbdd1_1280.jpg"
+					"patching_rect" : [ 211.0, 399.000060863281306, 375.0, 20.0 ]
 				}
 
 			}
@@ -1238,7 +1228,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 146.0, 226.500060828125015, 321.0, 31.0 ]
+					"patching_rect" : [ 146.0, 226.500060828125015, 321.0, 31.0 ],
+					"text" : "dans 38 m'entends-tu"
 				}
 
 			}
@@ -1251,8 +1242,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 211.0, 344.00006103515625, 246.0, 31.0 ],
-					"text" : "moto"
+					"patching_rect" : [ 211.0, 344.00006103515625, 246.0, 31.0 ]
 				}
 
 			}

@@ -42,6 +42,17 @@ if __name__ == '__main__':
     #url = 'http://apiv3.iucnredlist.org/api/v3/species/countries/id/'
     #iid = '12392'
     
+    #COMMON_NAMES
+    #/api/v3/species/common_names/:name?token='YOUR TOKEN'
+    
+    #THREATS
+    #https://apiv3.iucnredlist.org/api/v3/threats/species/name/Loxodonta%20africana?token=
+    #https://apiv3.iucnredlist.org/api/v3/threats/species/id/12392?token=
+    
+    #WEBLINK
+    #https://apiv3.iucnredlist.org/api/v3/weblink/loxodonta%20africana
+    #/api/v3/taxonredirect/:taxonID
+    
     print url + region + page + category + iid + "?token=" + TOKEN
     resp = get(url + region + page + category + iid, params)
 
@@ -86,6 +97,7 @@ if __name__ == '__main__':
             print "  freshwater: " + str(res2['freshwater_system'])
             print "  terrestrial: " + str(res2['terrestrial_system'])
             
+            '''
             #SYNONYM
             url3 = 'http://apiv3.iucnredlist.org/api/v3/species/synonym/'
             resp3 = get(url3 + res2['scientific_name'], params)
@@ -96,6 +108,7 @@ if __name__ == '__main__':
                     print "    synonym: " + str(result3['result'][j]['synonym'])
             #else:
             #    raise ValueError(resp3.text)
+            #'''
             
             #COUNTRY OCCURENCE
             #TODO à tester

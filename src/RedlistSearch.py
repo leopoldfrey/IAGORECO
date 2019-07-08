@@ -1,5 +1,5 @@
-#import sys, webbrowser, 
-import sys, random
+import simplejson as json
+import sys, random, time
 from threading import Thread
 from requests import get
 from pyosc import Server
@@ -13,8 +13,29 @@ def bool2int(b):
     else:
         return 0       
 
+class Species:
+    def __init__(self):
+        self.id = 0
+        self.scientific_name = ""
+        self.common_name = ""
+        self.kingdom = ""
+        self.phylum = ""
+        self.clas = ""
+        self.order = ""
+        self.family = ""
+        self.genus = ""
+        self.category = ""
+        self.population_trend = ""
+        self.marine = 0
+        self.freshwater = 0
+        self.terrestrial = 0
+        self.link = ""
+        self.threats = []
+        self.occurences = []
+    
+
 class ApiThread(Thread):
-    def __init__(self, osc_client, mode='SPECIES_CATEGORY', page=0, region='', iid='', category='', sname='', nresult=10, country=''):
+    def __init__(self, osc_client, mode='SPECIES_CATEGORY', page=0, region='', iid='', category='', sname='', nresult=10, country='', species_data=''):
         Thread.__init__(self)
         self.osc_client = osc_client
         self.mode = mode
@@ -26,6 +47,7 @@ class ApiThread(Thread):
         self.sname = sname
         self.nresult = nresult
         self.params = {'token' : TOKEN }
+        self.species_data = species_data
         
     def run(self):
         if(self.mode == 'country'):
@@ -128,7 +150,7 @@ class ApiThread(Thread):
         elif(self.mode == 'species_category'):
             #SPECIES BY CATEGORY "DD", "LC", "NT", "VU", "EN", "CR", "EW", "EX", "LRlc", "LRnt", "LRcd".
             url = 'http://apiv3.iucnredlist.org/api/v3/species/category/'
-            category = 'CR'
+            category = self.category#'CR'
             print('SPECIES_CATEGORY URL '+ url + category + "?token=" + TOKEN)
             resp = get(url + category, self.params)
             if resp.status_code == 200:
@@ -217,9 +239,25 @@ class ApiThread(Thread):
             else:
                 raise ValueError(resp.text)
             
+        elif(self.mode == 'threats'):
+        
+            #THREATS
+            url = 'http://apiv3.iucnredlist.org/api/v3/threats/species/id/'
+            iid = self.iid#'12392'
+            print('THREATS URL '+ url + iid + "?token=" + TOKEN)
+            resp = get(url + iid, self.params)
+            if resp.status_code == 200:
+                result = resp.json()
+                for x in range(0,len(result['result'])):
+                    res = result['result'][x]
+                    print(str(res['title']))
+                    self.osc_client.send('/threats',  "\'" + str(res['title']) + "\'")
+            else:
+                raise ValueError(resp.text)
+            
         elif(self.mode == 'country_occurence'):
             #COUNTRY OCCURENCE
-            '''url = 'http://apiv3.iucnredlist.org/api/v3/species/countries/id/'
+            url = 'http://apiv3.iucnredlist.org/api/v3/species/countries/id/'
             iid = str(self.iid)
             print('COUNTRY_OCCURENCE URL '+ url + iid + "?token=" + TOKEN)
             resp = get(url + iid, self.params)
@@ -227,22 +265,126 @@ class ApiThread(Thread):
                 result = resp.json()
                 count = result['count']
                 for k in range(0, count):
-                    self.osc_client.send('/country_occurence', str(result['result'][k]['country']))
+                    res = result['result'][k]
+                    self.osc_client.send('/country_occurence', "\'" + str(res['country']) + "\' " + str(res['presence']))
             else:
                 raise ValueError(resp.text)
-            #'''  
-                      
-        #COMMON_NAMES
-        #/api/v3/species/common_names/:name?token='YOUR TOKEN'
-        
-        #THREATS
-        #https://apiv3.iucnredlist.org/api/v3/threats/species/name/Loxodonta%20africana?token=
-        #https://apiv3.iucnredlist.org/api/v3/threats/species/id/12392?token=
-        
-        #WEBLINK
-        #https://apiv3.iucnredlist.org/api/v3/weblink/loxodonta%20africana
-        #/api/v3/taxonredirect/:taxonID
-        
+ 
+        elif(self.mode == 'special'):
+            #STORE LIST
+            print("species already stored "+str(len(self.species_data)))
+            url = 'http://apiv3.iucnredlist.org/api/v3/species/category/'
+            category = self.category#'CR'
+            print("Getting category "+category + "...")
+            #print('SPECIES_CATEGORY URL '+ url + category + "?token=" + TOKEN)
+            resp = get(url + category, self.params)
+            if resp.status_code == 200:
+                result = resp.json()
+                count = result['count']
+                print("Results = "+str(count))
+                cc = 1
+                for x in range(0,count):
+                    res = result['result'][x]
+                    if str(res['taxonid']) in self.species_data :
+                        print("- We already have \""+str(res['taxonid'])+"\" -")
+                    else :
+                        s = Species()
+                        s.id = res['taxonid']
+                        s.category = self.category
+                        
+                        url2 = 'http://apiv3.iucnredlist.org/api/v3/species/id/'
+                        print("Getting species " + str(s.id) + "...")
+                        resp2 = get(url2 + str(s.id), self.params)
+                        if resp2.status_code == 200:
+                            result2 = resp2.json()
+                            if(len(result2['result']) >= 1):
+                                res= result2['result'][0]
+                                s.scientific_name = str(res['scientific_name'])
+                                s.common_name = str(res['main_common_name'])
+                                s.kingdom = str(res['kingdom'].capitalize())
+                                s.phylum = str(res['phylum'].capitalize())
+                                s.clas = str(res['class'].capitalize())
+                                s.order = str(res['order'].capitalize())
+                                s.family = str(res['family'].capitalize())
+                                s.genus = str(res['genus'].capitalize())
+                                s.population_trend = str(res['population_trend'])
+                                s.marine = bool2int(res['marine_system'])
+                                s.freshwater = bool2int(res['freshwater_system'])
+                                s.terrestrial = bool2int(res['terrestrial_system'])
+                                
+                                #link
+                                url3 = 'https://apiv3.iucnredlist.org/api/v3/weblink/'
+                                print("    Getting weblink")
+                                resp3 = get(url3 + res['scientific_name'], self.params)
+                                if resp3.status_code == 200:
+                                    result3 = resp3.json()
+                                    s.link = str(result3.get('rlurl', 'none'))
+                                else: 
+                                    #raise ValueError(resp3.text)
+                                    sys.stdout.write('\n')
+                                    print("        no link")
+                                
+                                #threats
+                                url4 = 'http://apiv3.iucnredlist.org/api/v3/threats/species/id/'
+                                sys.stdout.write("    Getting threats")
+                                resp4 = get(url4 + str(s.id), self.params)
+                                if resp4.status_code == 200:
+                                    result4 = resp4.json()
+                                    for x in range(0,len(result4['result'])):
+                                        sys.stdout.write('.')
+                                        #print(">> \'" + str(result4['result'][x]['title']) + "\'")
+                                        s.threats.append("\'" + str(result4['result'][x]['title']) + "\'")
+                                    sys.stdout.write('\n')
+                                else:
+                                    #raise ValueError(resp4.text)
+                                    sys.stdout.write('\n')
+                                    print("        no threats")
+                                
+                                #print(">>>> THREATS "+str(len(s.threats)))
+                                
+                                #country occurence
+                                url5 = 'http://apiv3.iucnredlist.org/api/v3/species/countries/id/'
+                                sys.stdout.write("    Getting country occurences")
+                                resp5 = get(url5 + str(s.id), self.params)
+                                if resp5.status_code == 200:
+                                    result5 = resp5.json()
+                                    count5 = result5['count']
+                                    for k in range(0, count5):
+                                        res5 = result5['result'][k]
+                                        sys.stdout.write('.')
+                                        #print(">> \'" + str(res5['country']) + "\' " + str(res5['presence']))
+                                        s.occurences.append("\'" + str(res5['country']) + "\' " + str(res5['presence']))
+                                    #print(">>>> OCCURENCES "+str(len(s.occurences)))
+                                    sys.stdout.write('\n')
+                                else:
+                                    sys.stdout.write('\n')
+                                    print("        no occurences")
+                                    #raise ValueError(resp5.text)
+                                
+                            else:
+                                print("no results")
+                
+                        else:
+                            print("Bad gateway ?")
+                            print(resp2.text)   
+                            #raise ValueError(resp2.text)
+                        
+                        print("    Adding species : " + str(s.id) + " (" + str(cc) + "/" + str(count) + ") + Saving")
+                        self.species_data[str(s.id)] = s.__dict__
+                        
+                        with open('species_list.json', 'w') as outfile:  
+                            json.dump(self.species_data, outfile, indent=4, separators=(',', ': '))
+                        
+                        for x in range(10):
+                            sys.stdout.write('.')
+                            sys.stdout.flush()
+                            time.sleep(0.1)
+                        print("")
+                    cc = cc + 1
+                print("Done")
+                    
+            else:
+                raise ValueError(resp.text)      
     
 class RedlistSearch:
     
@@ -257,7 +399,13 @@ class RedlistSearch:
         self.nresult = 10
         self.sname = 'loxodonta africana'
         self.mode = 'species_id'
-         
+        
+        with open("species_list.json") as infile:
+            self.species_data = json.load(infile)
+            print("species : "+str(len(self.species_data)))
+            #for i in self.species_data:
+            #    print("    >> id "+str(i))
+                
         print("RedlistSearch Ready")
             
     def callback(self, address, *args):
@@ -303,9 +451,9 @@ class RedlistSearch:
                 print("     " + str(args[x]))
     
     def search(self):
-        thd = ApiThread(self.osc_client, mode=self.mode, page=self.page, region=self.region, iid=self.iid, category=self.category, sname=self.sname, nresult=self.nresult, country=self.country);
+        thd = ApiThread(self.osc_client, mode=self.mode, page=self.page, region=self.region, iid=self.iid, category=self.category, sname=self.sname, nresult=self.nresult, country=self.country, species_data=self.species_data);
         thd.start();
-    
+
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         RedlistSearch();

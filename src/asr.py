@@ -75,7 +75,7 @@ class ASR:
    
     def index(self):
         return '''<!DOCTYPE html>
-<html lang="fr">
+<html>
     <head>
         <meta charset="utf8">
         <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> 
@@ -106,7 +106,8 @@ if(recognition == null) {
 recognition.continuous = true;
 recognition.interimResults = true;
 recognition.maxAlternatives = 1;
-recognition.lang = "fr-FR";
+//recognition.lang = "fr-FR";
+recognition.lang = "en-US";
 recognition.onresult = detect;
 recognition.onend = function(event) { recognition.start(); console.log('event: end'); }
 recognition.onstart = function(event) { console.log('event: start'); }
@@ -123,16 +124,9 @@ function detect(event) {
         console.log(event.results[i]);
         if(event.results[i][0].confidence < .5) continue;
         $(p).text(event.results[i][0].transcript);
-        /*$.post('/result', {transcript: String(event.results[i][0].transcript), 
-                confidence: event.results[i][0].confidence, 
-                sentence: event.results[i].isFinal ? 1 : 0
-                });//*/
-        //$('p').text(event.results[i][0].transcript);
         if(event.results[i].isFinal) {
-            //$('p').append(" OK");
             p = $('<p></p>');
             $('body').append(p);
-            //window.location.reload(false); 
         }
         $.post('/result', {transcript: String(event.results[i][0].transcript), 
                 confidence: event.results[i][0].confidence, 
@@ -153,6 +147,7 @@ setInterval(function() {
        }
    })
 }, 100);
+
         </script>
     </body>
 </html>

@@ -6,7 +6,7 @@ from threading import Thread
 #TODO DO NOT DOWNLOAD
 
 class DownThread(Thread):
-    def __init__(self, keyword, osc_client, mode='random', size='large', color='none'):
+    def __init__(self, keyword, osc_client, mode='random', size='medium', color='none'):
         Thread.__init__(self)
         self.keyword = keyword
         self.osc_client = osc_client

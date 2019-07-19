@@ -83,6 +83,8 @@ class ASR:
 body
 {
 font-family:helvetica;
+background-color: black;
+color: lightgray;
 }
 p
 {

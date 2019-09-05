@@ -11,13 +11,6 @@ class Client:
         except Exception as e:
             print(e)
             print('OSC: Could not connect to server %s:%d' % (host, port))
-        try:    
-            print('OSC: connecting to client %s:%d' % ('127.0.0.1', 9001))
-            self.target2 = liblo.Address('127.0.0.1', 9001)
-        except Exception as e:
-            print(e)
-            print('OSC: Could not connect to server %s:%d' % ('127.0.0.1', 9001))
-        
 
     def send(self, message):
         try:
@@ -27,27 +20,17 @@ class Client:
             print(e)
             print('OSC: failed to send message [%s]' % str(message))
 
-    def sendTWO(self, address, message):
-        try:
-            msg = liblo.Message(str(address))
-            msg.add(str(message))
-            liblo.send(self.target, msg)
-            liblo.send(self.target2, msg)
-        except Exception as e:
-            print(e)
-            print('OSC: failed to send message [%s] [%s]' % (str(address),str(message)))
-
     def send_action(self, action):
         # self.send('/action/%s' % (action.text))
         self.send('ACTION: %s' % (action.name))
 
     def send_words(self, start, words):
         # self.send('/words/%d/%s' % (start, words))
-        self.sendTWO('/words', words)
+        self.send('/words %s' % words)
 
     def send_sentence(self, start, words):
         # self.send('/words/%d/%s' % (start, words))
-        self.sendTWO('/sentence', words)
+        self.send('/sentence %s' % words)
 
 
 class Server:

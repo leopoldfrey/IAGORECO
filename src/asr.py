@@ -62,9 +62,8 @@ class ASR:
             print("phrase  _" + mess)
             osc.client.send_sentence(self.sentence_num, mess)
             self.sentence_num += 1
-        else:
-            print("mots    _" + mess)
-            osc.client.send_words(self.sentence_num, mess)
+        print("mots    _" + mess)
+        osc.client.send_words(self.sentence_num, mess)
         return 'ok'
 
     def need_restart(self):

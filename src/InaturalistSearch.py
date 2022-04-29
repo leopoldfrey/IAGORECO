@@ -3,7 +3,7 @@ import sys, osc, random
 from requests import get
 from threading import Thread
 
-class Image():
+class InatImage():
     def __init__(self):
         self.root_url = "https://api.inaturalist.org/v1/search"
 
@@ -29,7 +29,7 @@ class Image():
         else:
             raise ValueError(resp.text)
         
-class DownThread(Thread):
+class InatThread(Thread):
     def __init__(self, keyword, osc_client, mode='random', size='medium_url'):
         Thread.__init__(self)
         self.keyword = keyword
@@ -38,7 +38,7 @@ class DownThread(Thread):
         self.size=size
         
     def run(self):
-        image = Image()
+        image = InatImage()
         ims = image.search(q=self.keyword,
                            locale='fr',
                            sources='taxa',
@@ -136,8 +136,7 @@ class InaturalistSearch:
         message = message.replace("… ", " ")
         message = message.replace('\xe2\x80\x99', "'")
         
-        thd = DownThread(message, self.osc_client, self.mode, self.size);
-        thd.start();
+        InatThread(message, self.osc_client, self.mode, self.size).start();
         
 if __name__ == '__main__':
     if len(sys.argv) == 1:

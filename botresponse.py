@@ -1,3 +1,7 @@
+"""
+This script simulates the reception of bot responses.
+"""
+
 from __future__ import print_function, division
 import sys, osc, os
 
@@ -24,18 +28,32 @@ class BotResponse(object):
         print("Ready For Getting Bot Response")
 
 
-    def osc_server_message(self, message):
-        print("message entrant {}".format(message))
-        if message == '/result/botresponse':
-            print('get: {}'.format(message))
-            #result = self.generate(200, prime='<eos>', temperature=0.9)
-            #thetext = ' '.join([x for x in result if x != '<eos>'])
-            #thetext = ("   " + thetext + "   ").strip('<eos>')
-            #thetext = thetext.replace("(", " ")
-            #thetext = thetext.replace(")", " ")
-            #thetext = thetext.strip(';')
-            #print(thetext)
-            #self.osc_client.send("/generator/result "+thetext);
+    def osc_server_message(self, message, args):
+        print("message entrant {}".format(args))
+            
+        if '/iagotchi/botresponse' in message:
+            message = message.replace('/iagotchi/botresponse', '')
+            print('botresponse : {}'.format(args))
+        
+        elif '/iagotchi/user_tmp' in message:
+            message = message.replace('/iagotchi/user', '')
+            print('user_tmp : {}'.format(message))
+           
+        elif '/iagotchi/user' in message:
+            message = message.replace('/iagotchi/user', '')
+            print('user : {}'.format(message))
+           
+        elif '/iagotchi/session/start' in message:
+            message = message.replace('/iagotchi/session/start', '')
+            print('sesson start at: {}'.format(message))
+           
+        elif '/iagotchi/session/stop' in message:
+            message = message.replace('/iagotchi/session/stop', '')
+            print('session stop at: {}'.format(message))
+            
+        elif '/iagotchi/session/name' in message:
+            message = message.replace('/iagotchi/session/name', '')
+            print('user name is : {}'.format(message))
         elif message == '/exit':
             self.osc_server.shutdown()
             sys.exit(0)

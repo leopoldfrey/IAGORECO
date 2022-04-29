@@ -4,9 +4,9 @@ from threading import Thread
 import random
 from requests import get
 
-API_KEY = '11796917-495df626c35f7f8d0c3831455'
+PIXA_API_KEY = '11796917-495df626c35f7f8d0c3831455'
 
-class Image():
+class PixaImage():
     def __init__(self, api_key):
         self.api_key = api_key
         self.root_url = "https://pixabay.com/api/"
@@ -55,7 +55,7 @@ class Image():
         else:
             raise ValueError(resp.text)
 
-class DownThread(Thread):
+class PixaThread(Thread):
     def __init__(self, keyword, osc_client, mode='random'):
         Thread.__init__(self)
         self.keyword = keyword
@@ -63,7 +63,7 @@ class DownThread(Thread):
         self.mode=mode
         
     def run(self):
-        image = Image(API_KEY)
+        image = PixaImage(PIXA_API_KEY)
         ims = image.search(q=self.keyword,
                            lang='fr',
                            response_group='high_resolution',
@@ -157,8 +157,7 @@ class PixabaSearch:
         message = message.replace("… ", " ")
         message = message.replace('\xe2\x80\x99', "'")
         
-        thd = DownThread(message, self.osc_client, self.mode);
-        thd.start();
+        PixaThread(message, self.osc_client, self.mode).start();
         
 if __name__ == '__main__':
     if len(sys.argv) == 1:

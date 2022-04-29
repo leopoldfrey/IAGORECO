@@ -5,7 +5,7 @@ from threading import Thread
 
 #TODO DO NOT DOWNLOAD
 
-class DownThread(Thread):
+class PixaThread(Thread):
     def __init__(self, keyword, osc_client, mode='random', size='large', color='none'):
         Thread.__init__(self)
         self.keyword = keyword
@@ -111,7 +111,7 @@ class GoogleImage:
         message = message.replace("… ", " ")
         message = message.replace('\xe2\x80\x99', "'")
         
-        thd = DownThread(message, self.osc_client, self.mode, self.size, self.color);
+        thd = PixaThread(message, self.osc_client, self.mode, self.size, self.color);
         thd.start();
         
 if __name__ == '__main__':
